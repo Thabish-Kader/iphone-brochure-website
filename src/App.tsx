@@ -1,12 +1,18 @@
-import { Jumbotron } from "./components/Jumbotron";
+import { DisplaySection } from "./components/DisplaySection";
+import { Hero } from "./components/Hero";
 import { Navbar } from "./components/Navbar";
+import { SoundSection } from "./components/SoundSection";
+import { WebGiViewer } from "./components/WebGiViewer";
 
 function App() {
 	return (
-		<div className="App">
+		<main className="App">
 			<Navbar />
-			<Jumbotron />
-		</div>
+			<Hero />
+			<SoundSection />
+			<DisplaySection />
+			<WebGiViewer />
+		</main>
 	);
 }
 

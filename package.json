@@ -1,22 +1,25 @@
 {
-  "name": "iphone",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
-  "devDependencies": {
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
-    "@vitejs/plugin-react-swc": "^3.0.0",
-    "typescript": "^4.9.3",
-    "vite": "^4.2.0"
-  }
+	"name": "iphone",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"gsap": "^3.11.5",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"@types/webgi": "https://storage.googleapis.com/dist.pixotronics.com/webgi/runtime/bundle-types-0.5.5.tgz",
+		"webgi": "https://storage.googleapis.com/dist.pixotronics.com/webgi/runtime/bundle-0.5.8.tgz"
+	},
+	"devDependencies": {
+		"@types/react": "^18.0.28",
+		"@types/react-dom": "^18.0.11",
+		"@vitejs/plugin-react-swc": "^3.0.0",
+		"typescript": "^4.9.3",
+		"vite": "^4.2.0"
+	}
 }
