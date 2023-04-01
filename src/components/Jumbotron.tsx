@@ -1,5 +1,7 @@
 import React from "react";
 import iphone from "../assets/images/iphone-14.jpg";
+import HoldingIphone from "../assets/images/iphone-hand.png";
+
 export const Jumbotron = () => {
 	return (
 		<div className="jumbotron-section wrapper">
@@ -15,6 +17,7 @@ export const Jumbotron = () => {
 					<a className="link">Learn More</a>
 				</li>
 			</ul>
+			<img className="iphone-img" src={HoldingIphone} alt="iphone" />
 		</div>
 	);
 };
