@@ -1,0 +1,2 @@
+-   Aim : Learn webgi with pixtronix and gsap
+-   Result : While createing this brochure website i found that it was significantly slower compared to vanilla three js or react three fiber. Overall, i dont think i will be useing this until there is some performance boosts.
