@@ -22,17 +22,23 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { scrollAnimation } from "../lib/scroll-animation";
 
+type WebGiViewerProps = {
+	contentRef: React.RefObject<HTMLDivElement>;
+};
 gsap.registerPlugin(ScrollTrigger);
 
-export const WebGiViewer = forwardRef((props, ref) => {
+export const WebGiViewer = forwardRef((props: WebGiViewerProps, ref) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null!);
 	const [viewerRef, setViewerRef] = useState<any>(null);
-	const [targetRef, setTargetRef] = useState(null);
+	const [targetRef, setTargetRef] = useState<any>(null);
 	const [cameraRef, setCameraRef] = useState<any>(null!);
-	const [positionRef, setPositionRef] = useState(null);
+	const [positionRef, setPositionRef] = useState<any>(null);
+	const canvasContainerRef = useRef<HTMLDivElement>(null);
 
 	useImperativeHandle(ref, () => ({
 		triggerPreview() {
+			canvasContainerRef.current!.style.pointerEvents = "all";
+			props.contentRef.current!.style.opacity = "0";
 			gsap.to(positionRef, {
 				x: 13.04,
 				y: -2,
@@ -43,6 +49,9 @@ export const WebGiViewer = forwardRef((props, ref) => {
 				},
 			});
 			gsap.to(targetRef, { x: 0.11, y: 0.0, z: 0.0, duration: 2 });
+			viewerRef.scene.activeCamera.setCameraOPtions({
+				controlsEnabled: true,
+			});
 		},
 	}));
 
@@ -64,10 +73,16 @@ export const WebGiViewer = forwardRef((props, ref) => {
 			canvas: canvasRef.current,
 		});
 
+		setViewerRef(viewer);
+
 		const manager = await viewer.addPlugin(AssetManagerPlugin);
 		const camera = viewer.scene.activeCamera;
 		const position = camera.position;
 		const target = camera.target;
+
+		setCameraRef(camera);
+		setPositionRef(position);
+		setTargetRef(target);
 
 		// Add plugins individually.
 		await viewer.addPlugin(GBufferPlugin);
@@ -85,7 +100,9 @@ export const WebGiViewer = forwardRef((props, ref) => {
 		await manager.addFromPath("scene-black.glb");
 
 		viewer.getPlugin(TonemapPlugin)!.config!.clipBackground = true;
-		viewer.scene.activeCamera.setCameraOptions({ controlsEnabled: false });
+		viewer.scene.activeCamera.setCameraOptions({
+			controlsEnabled: false,
+		});
 
 		window.scrollTo(0, 0);
 		let needsUpdate = true;
@@ -108,7 +125,7 @@ export const WebGiViewer = forwardRef((props, ref) => {
 	}, []);
 
 	return (
-		<section id="webgi-canvas-container">
+		<section ref={canvasContainerRef} id="webgi-canvas-container">
 			<canvas id="webgi-canvas" ref={canvasRef} />
 		</section>
 	);
