@@ -35,6 +35,7 @@ export const WebGiViewer = forwardRef((props: WebGiViewerProps, ref) => {
 	const [positionRef, setPositionRef] = useState<any>(null);
 	const canvasContainerRef = useRef<HTMLDivElement>(null);
 	const [preview, setPreview] = useState(false);
+	const [isMobile, setIsMobile] = useState<boolean>();
 
 	useImperativeHandle(ref, () => ({
 		triggerPreview() {
@@ -76,6 +77,8 @@ export const WebGiViewer = forwardRef((props: WebGiViewerProps, ref) => {
 		});
 
 		setViewerRef(viewer);
+		const isMobileOrTablet = mobileAndTabletCheck();
+		setIsMobile(isMobileOrTablet);
 
 		const manager = await viewer.addPlugin(AssetManagerPlugin);
 		const camera = viewer.scene.activeCamera;
@@ -105,7 +108,11 @@ export const WebGiViewer = forwardRef((props: WebGiViewerProps, ref) => {
 		viewer.scene.activeCamera.setCameraOptions({
 			controlsEnabled: false,
 		});
-
+		if (isMobileOrTablet) {
+			position.set(-16.7, 1.17, 11.7);
+			target.set(0, 1.37, 0);
+			props.contentRef.current!.className = "mobile-or-tablet";
+		}
 		window.scrollTo(0, 0);
 		let needsUpdate = true;
 
