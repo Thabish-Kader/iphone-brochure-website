@@ -34,9 +34,11 @@ export const WebGiViewer = forwardRef((props: WebGiViewerProps, ref) => {
 	const [cameraRef, setCameraRef] = useState<any>(null!);
 	const [positionRef, setPositionRef] = useState<any>(null);
 	const canvasContainerRef = useRef<HTMLDivElement>(null);
+	const [preview, setPreview] = useState(false);
 
 	useImperativeHandle(ref, () => ({
 		triggerPreview() {
+			setPreview(true);
 			canvasContainerRef.current!.style.pointerEvents = "all";
 			props.contentRef.current!.style.opacity = "0";
 			gsap.to(positionRef, {
@@ -49,7 +51,7 @@ export const WebGiViewer = forwardRef((props: WebGiViewerProps, ref) => {
 				},
 			});
 			gsap.to(targetRef, { x: 0.11, y: 0.0, z: 0.0, duration: 2 });
-			viewerRef.scene.activeCamera.setCameraOPtions({
+			viewerRef.scene.activeCamera.setCameraOptions({
 				controlsEnabled: true,
 			});
 		},
@@ -124,9 +126,52 @@ export const WebGiViewer = forwardRef((props: WebGiViewerProps, ref) => {
 		setupViewer();
 	}, []);
 
+	const handleExit = useCallback(() => {
+		canvasContainerRef.current!.style.pointerEvents = "none";
+		props.contentRef.current!.style.opacity = "1";
+
+		viewerRef.scene.activeCamera.setCameraOptions({
+			controlsEnabled: false,
+		});
+		setPreview(false);
+		gsap.to(positionRef, {
+			x: 1.56,
+			y: 5.0,
+			z: 0.01,
+			scrollTrigger: {
+				trigger: ".display-section",
+				start: "top bottom",
+				end: "top top",
+				scrub: 2,
+				immediateRender: false,
+			},
+			onUpdate: () => {
+				viewerRef.setDirty();
+				cameraRef.positionTargetUpdated(true);
+			},
+		});
+		gsap.to(targetRef, {
+			opacity: 0,
+			x: -0.55,
+			y: 0.32,
+			z: 0.0,
+			scrollTrigger: {
+				trigger: ".display-section",
+				start: "top bottom",
+				end: "top top",
+				scrub: 2,
+				immediateRender: false,
+			},
+		});
+	}, [canvasContainerRef, viewerRef, positionRef, cameraRef, targetRef]);
 	return (
 		<section ref={canvasContainerRef} id="webgi-canvas-container">
 			<canvas id="webgi-canvas" ref={canvasRef} />
+			{preview && (
+				<button className="button" onClick={handleExit}>
+					Exit
+				</button>
+			)}
 		</section>
 	);
 });
