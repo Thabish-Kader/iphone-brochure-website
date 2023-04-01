@@ -62,10 +62,11 @@ export const WebGiViewer = forwardRef((props: WebGiViewerProps, ref) => {
 		(
 			position: THREE.Vector3,
 			target: THREE.Vector3,
-			onUpdate: () => void
+			onUpdate: () => void,
+			isMobile: boolean
 		) => {
 			if (position && target && onUpdate) {
-				scrollAnimation(position, target, onUpdate);
+				scrollAnimation(position, target, onUpdate, isMobile);
 			}
 		},
 		[]
@@ -126,7 +127,7 @@ export const WebGiViewer = forwardRef((props: WebGiViewerProps, ref) => {
 				needsUpdate = false;
 			}
 		});
-		memorizedScrollAnimation(position, target, onUpdate);
+		memorizedScrollAnimation(position, target, onUpdate, isMobile!);
 	}, []);
 
 	useEffect(() => {
@@ -142,9 +143,9 @@ export const WebGiViewer = forwardRef((props: WebGiViewerProps, ref) => {
 		});
 		setPreview(false);
 		gsap.to(positionRef, {
-			x: 1.56,
-			y: 5.0,
-			z: 0.01,
+			x: isMobile ? 1.56 : 9.36,
+			y: isMobile ? 5.0 : 10.95,
+			z: isMobile ? 0.01 : 0.09,
 			scrollTrigger: {
 				trigger: ".display-section",
 				start: "top bottom",
@@ -159,9 +160,9 @@ export const WebGiViewer = forwardRef((props: WebGiViewerProps, ref) => {
 		});
 		gsap.to(targetRef, {
 			opacity: 0,
-			x: -0.55,
-			y: 0.32,
-			z: 0.0,
+			x: isMobile ? -0.55 : -1.62,
+			y: isMobile ? 0.32 : 0.02,
+			z: isMobile ? 0.0 : -0.06,
 			scrollTrigger: {
 				trigger: ".display-section",
 				start: "top bottom",
